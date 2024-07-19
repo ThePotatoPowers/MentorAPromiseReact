@@ -1,6 +1,4 @@
 import React from 'react';
-import {useDraggable} from '@dnd-kit/core';
-import {CSS} from '@dnd-kit/utilities';
 import duck from './assets/duck40.png';
 import './styles/styles.css';
 
