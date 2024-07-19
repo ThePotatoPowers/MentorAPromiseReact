@@ -1,0 +1,15 @@
+.ducks {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 5%;
+
+    width: 100%;
+    border: 1px solid #000;
+}
+
+.check {
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 5%;
+}

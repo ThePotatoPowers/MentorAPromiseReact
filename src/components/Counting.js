@@ -1,56 +1,156 @@
-import React, {useState}    from 'react';
+import React, {useState, useEffect}    from 'react';
+import ReactDOM from 'react-dom/client';
 import './styles/draggable.css';
 import './styles/styles.css';
 import incorrect from './assets/incorrect.svg';
 import correct from './assets/check.svg';
-import Draggable from './Duck';
-import Droppable from './Pond';
-import {DndContext} from '@dnd-kit/core';
+import Duck from './Duck';
+import pond from './assets/pond.jpg';
+import duckImg from './assets/duck40.png';
+import translate from "translate";
 
-function Counting() {
 
-    const [isDropped, setIsDropped] = useState(false);
-    const draggableMarkup = (
-        <Draggable/>
-    );
+const Counting = () => {
     
 
-    return (
-        <div className="draggableBody">
-            <center>
-                <h1 id="countTitle">Counting Drag</h1>
+    const randRange = (min, max) => {
+        return Math.floor(Math.random()
+            * (max - min + 1)) + min;
+    };
 
-                <DndContext onDragEnd={handleDragEnd}>
-                    {!isDropped ? draggableMarkup : null}
-                    <Droppable>
-                        {isDropped ? draggableMarkup : ''}
-                    </Droppable>
-                    
-                </DndContext>    
 
+    const [voices, setVoices] = useState([]);
+    const [selectedVoice, setSelectedVoice] = useState(null);
+
+    useEffect(() => {
+        // Load available 
+        const loadVoices = (spoken) => {
+            const synth = window.speechSynthesis;
+            const voices = synth.getVoices();
+            setVoices(voices);
+            // Set a Spanish voice if available
+            const englishVoice = voices.find(voice => voice.lang.includes('en'));
+            const spanishVoice = voices.find(voice => voice.lang.includes('es'));
+            setSelectedVoice(spanishVoice);
+        };
+
+        loadVoices();
+        // Voices might load asynchronously
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+    }, []);
+
+    const numInitialDucks = randRange(1, 10);
+    const targetNumber = randRange(1, numInitialDucks);
+
+    const initialDucks = [
+        ...Array(numInitialDucks).keys()
+    ].map(i => ({ id: i }));
+    const [ducks, setDucks] = useState(initialDucks);
+    const [pondDucks, setPondDucks] = useState([]);
+
+    const handleDragStart = (event, id) => {
+        event.dataTransfer.setData('type', 'duck');
+        event.dataTransfer.setData('id', id);
+    }
+    
+    function handleOnDrop(event) {
+        const type = event.dataTransfer.getData('type');
+        // get type of pond
+        const dropZone = event.target;
+        console.log(dropZone.id);
         
-                <p>Count: <span id="countB">0</span></p>
 
-                <br/>
-                <h3>Drag three ducks to box B</h3>
-                <br/>
-                <img src={incorrect} alt="incorrect" id="check"/>
-                <img src={correct} alt="correct" id="check2"/>
+        const id = parseInt(event.dataTransfer.getData('id'));
+        if (type === 'duck' && dropZone.id === 'pondImg') {
+
+            console.log('Duck dropped in pond');
+            const newDucks = ducks.filter(duck => duck.id !== id);
+            const droppedDuck = ducks.find(duck => duck.id === id);
+            setDucks(newDucks);
+            setPondDucks([...pondDucks, droppedDuck]);
+        }
+        if (type === 'pond' && dropZone.id === 'ducks') {
+            console.log('Duck dropped in ducks');
+            const newPondDucks = pondDucks.filter(duck => duck.id !== id);
+            const droppedDuck = pondDucks.find(duck => duck.id === id);
+            setPondDucks(newPondDucks);
+            setDucks([...ducks, droppedDuck]);
+
+        }
+            // count how many ducks are in the pond
+            const duckCount = pondDucks.length + 1;
             
-            
-            </center>
+
+            const synth = window.speechSynthesis;
+
+            var speech = new SpeechSynthesisUtterance(`There are ${duckCount} ducks in the pond`);
 
 
+
+
+            synth.speak(speech);
+           
+
+            const translatedCount = translate(`There are ${duckCount} ducks in the pond`, { from: "en", to: "es" }).then(text => {
+                speech = new SpeechSynthesisUtterance(text);
+                if (selectedVoice) {
+                    speech.voice = selectedVoice;
+                }
+     
+                synth.speak(speech);
+            });
+                
+        }
+    
+
+    function handleOnDragOver(event) {
+        event.preventDefault();
+    }
+
+    
+
+    return(
+    <div className="counting">
+
+        <div className="ducks"
+                onDrop={handleOnDrop}
+                onDragOver={handleOnDragOver}
+            >
+            {ducks.map(duck => (
+                    <Duck key={duck.id} id={duck.id} handleDragStart={handleDragStart} />
+                ))}
 
         </div>
-    );
 
-    function handleDragEnd(event) {
-        if (event.over && event.over.id === 'pond') {
-            setIsDropped(true);
-            console.log("here!");
-        }
-    }
+        <div className='pond'
+            onDrop={handleOnDrop}
+            onDragOver={handleOnDragOver}
+        
+        >
+            {pondDucks.map((duck, index) => (
+                <img 
+                    key={index}
+                    src={duckImg}
+                    alt="duck"
+                    className='duck'
+                />
+            ))}
+            <img id="pondImg" src={pond} alt="pond" />
+            
+        </div>
+
+
+        <div className="check">
+            {pondDucks.length === targetNumber ? (
+                <img src={correct} alt="correct" />
+            ) : (
+                <img src={incorrect} alt="incorrect" />
+            )}
+            <h3>Get {targetNumber} ducks in the pond</h3>
+        </div>
+
+    </div>  
+    );
 
     };
 
