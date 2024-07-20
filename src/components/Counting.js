@@ -12,6 +12,7 @@ const Counting = () => {
     const [ducks, setDucks] = useState([]);
     const [pondDucks, setPondDucks] = useState([]);
     const [targetNumber, setTargetNumber] = useState(0);
+    let triggered = false;
 
 
     const randRange = (min, max) => {
@@ -52,12 +53,31 @@ const Counting = () => {
 
     }, []);
 
+    useEffect(() => {
+
+        console.log(`There are ${pondDucks.length} ducks in the pond`);
+
+        const synth = window.speechSynthesis;
+        let speech = new SpeechSynthesisUtterance(`There are ${pondDucks.length} ducks in the pond`);
+        synth.speak(speech);
+
+        translate(`There are ${pondDucks.length} ducks in the pond`, { from: "en", to: "es" }).then(text => {
+            speech = new SpeechSynthesisUtterance(text);
+            if (selectedVoice) {
+                speech.voice = selectedVoice;
+            }
+            synth.speak(speech);
+        });
+    }, [pondDucks, selectedVoice]);
+
+
     const handleDragStart = (event, id) => {
         event.dataTransfer.setData('type', 'duck');
         event.dataTransfer.setData('id', id);
     }
     
     function handleOnDrop(event) {
+        triggered = true;
         const type = event.dataTransfer.getData('type');
         // get type of pond
         const dropZone = event.target;
@@ -73,10 +93,7 @@ const Counting = () => {
             const droppedDuck = ducks.find(duck => duck.id === id);
             setDucks(newDucks);
             setPondDucks([...pondDucks, droppedDuck]);
-            console.log(`There are ${pondDucks.length + 1} ducks in the pond`);
-            for (let i = 0; i < pondDucks.length; i++) {
-                console.log(pondDucks[i]);
-            }
+
 
         }
         if (dropZone.className === 'ducks') {
@@ -85,37 +102,10 @@ const Counting = () => {
             const droppedDuck = pondDucks.find(duck => duck.id === id);
             setPondDucks(newPondDucks);
             setDucks([...ducks, droppedDuck]);
-            console.log(`There are ${pondDucks.length + 1} ducks in the pond`);
-            for (let i = 0; i < pondDucks.length; i++) {
-                console.log(pondDucks[i]);
-            }
-
-            // calculate number of ducks in pond accurately
-            
-        
-
-
         }
             
 
-            const synth = window.speechSynthesis;
-
-            var speech = new SpeechSynthesisUtterance(`There are ${pondDucks.length + 1} ducks in the pond`);
-
-
-
-
-            synth.speak(speech);
            
-
-            const translatedCount = translate(`There are ${pondDucks.length + 1} ducks in the pond`, { from: "en", to: "es" }).then(text => {
-                speech = new SpeechSynthesisUtterance(text);
-                if (selectedVoice) {
-                    speech.voice = selectedVoice;
-                }
-     
-                synth.speak(speech);
-            });
                 
         }
     
