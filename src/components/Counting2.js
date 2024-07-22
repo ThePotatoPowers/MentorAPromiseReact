@@ -6,13 +6,14 @@ import correct from './assets/check.svg';
 import Duck from './Duck';
 import pond from './assets/pond.jpg';
 import translate from "translate";
+import nest from './assets/nest.png';
 
 
 const Counting = () => {
     const [ducks, setDucks] = useState([]);
     const [pondDucks, setPondDucks] = useState([]);
+    const [nestDucks, setNestDucks] = useState([]);
     const [targetNumber, setTargetNumber] = useState(0);
-    let triggered = false;
 
 
     const randRange = (min, max) => {
@@ -77,7 +78,6 @@ const Counting = () => {
     }
     
     function handleOnDrop(event) {
-        triggered = true;
         const type = event.dataTransfer.getData('type');
         // get type of pond
         const dropZone = event.target;
@@ -96,6 +96,16 @@ const Counting = () => {
 
 
         }
+        else if (dropZone.id === 'nestImg') {
+            console.log('Duck dropped in nest');
+            const newNestDucks = ducks.filter(duck => duck.id !== id);
+            const droppedDuck = ducks.find(duck => duck.id === id);
+            setDucks(newNestDucks);
+            setNestDucks([...nestDucks, droppedDuck]);
+        }
+
+
+
         if (dropZone.className === 'ducks') {
             console.log('Duck dropped in ducks');
             const newPondDucks = pondDucks.filter(duck => duck.id !== id);
@@ -118,7 +128,7 @@ const Counting = () => {
 
     return(
     <div className="counting">
-        <h1>Count the Ducks (Level 1)</h1>
+        <h1>Count the Ducks (Level 2)</h1>
 
         <div className="ducks"
                 onDrop={handleOnDrop}
@@ -144,6 +154,23 @@ const Counting = () => {
                 />
             ))}
             <img id="pondImg" src={pond} alt="pond" />
+            
+        </div>
+
+        <div className='nest'
+            onDrop={handleOnDrop}
+            onDragOver={handleOnDragOver}
+        
+        >
+            {nestDucks.map((duck, index) => (
+                <Duck 
+                    key={duck.id} 
+                    id={duck.id} 
+                    handleDragStart={handleDragStart} 
+                    style={{ zIndex: index }}
+                />
+            ))}
+            <img id="nestImg" src={nest} alt="nest" />
             
         </div>
 

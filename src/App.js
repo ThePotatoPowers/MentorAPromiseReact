@@ -1,20 +1,29 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import Home from "./components/Home";
 import Counting from "./components/Counting";
+import Counting2 from "./components/Counting2";
+import Navbar from "./components/Navbar";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+} from "react-router-dom";
 
 function App() {
-  const [message, setMessage] = useState("Bruh");
-
-  useEffect(() => {
-    fetch("http://localhost:9000/")
-      .then((res) => res.json())
-      .then((data) => setMessage(data.message));
-  }, []);
-
   return (
     <div className="App">
-      <h1>{message}</h1>
-      <Counting />
+      <Router>
+          <Navbar />
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/counting" element={<Counting />} />
+                <Route
+                    path="/counting2"
+                    element={<Counting2 />}
+                />
+            </Routes>
+      </Router>
     </div>
   );
 }
