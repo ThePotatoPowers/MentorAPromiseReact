@@ -17,10 +17,10 @@ const Navbar = () => {
                     <NavLink to="/" >
                         Home
                     </NavLink>
-                    <NavLink to="/counting" activeStyle>
+                    <NavLink to="/counting" >
                         Counting
                     </NavLink>
-                    <NavLink to="/counting2" activeStyle>
+                    <NavLink to="/counting2" >
                         Counting 2
                     </NavLink>
 
