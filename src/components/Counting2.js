@@ -31,10 +31,10 @@ const Counting2 = () => {
         
         const loadVoices = (spoken) => {
             const synth = window.speechSynthesis;
-            const voices = synth.getVoices();
-            setVoices(voices);
+            const voice = synth.getVoices();
+            setVoices(voice);
             // Set a Spanish voice if available
-            const englishVoice = voices.find(voice => voice.lang.includes('en'));
+            voices.find(voice => voice.lang.includes('en'));
             const spanishVoice = voices.find(voice => voice.lang.includes('es'));
             setSelectedVoice(spanishVoice);
         };
@@ -55,7 +55,7 @@ const Counting2 = () => {
     setNestTarget(nestTarget);
     setDucks(initialDucks);
 
-    }, []);
+    }, [voices]);
 
     useEffect(() => {
 
