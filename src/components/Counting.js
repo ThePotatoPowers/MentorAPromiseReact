@@ -12,7 +12,6 @@ const Counting = () => {
     const [ducks, setDucks] = useState([]);
     const [pondDucks, setPondDucks] = useState([]);
     const [targetNumber, setTargetNumber] = useState(0);
-    let triggered = false;
 
 
     const randRange = (min, max) => {
@@ -71,37 +70,50 @@ const Counting = () => {
     }, [pondDucks, selectedVoice]);
 
 
-    const handleDragStart = (event, id) => {
+    const handleDragStart = (event, id, location) => {
         event.dataTransfer.setData('type', 'duck');
         event.dataTransfer.setData('id', id);
+        event.dataTransfer.setData('location', location);
+
     }
     
     function handleOnDrop(event) {
-        triggered = true;
         const type = event.dataTransfer.getData('type');
         // get type of pond
         const dropZone = event.target;
         console.log(dropZone);
         console.log(dropZone.className);
+
+        const original = event.dataTransfer.getData('location');
         
 
         const id = parseInt(event.dataTransfer.getData('id'));
         if (dropZone.id === 'pondImg') {
 
             console.log('Duck dropped in pond');
-            const newDucks = ducks.filter(duck => duck.id !== id);
-            const droppedDuck = ducks.find(duck => duck.id === id);
-            setDucks(newDucks);
-            setPondDucks([...pondDucks, droppedDuck]);
+            if (original === 'pond') {
+                return;
+            }
+            else {
+                const newDucks = ducks.filter(duck => duck.id !== id);
+                const droppedDuck = ducks.find(duck => duck.id === id);
+                setDucks(newDucks);
+                setPondDucks([...pondDucks, droppedDuck]);
+            }
 
 
         }
         if (dropZone.className === 'ducks') {
             console.log('Duck dropped in ducks');
             const newPondDucks = pondDucks.filter(duck => duck.id !== id);
-            const droppedDuck = pondDucks.find(duck => duck.id === id);
+            
+            if (original === 'pond') {
+                const droppedDuck = pondDucks.find(duck => duck.id === id);
+                setDucks([...ducks, droppedDuck]);
+            }
+            else return;
+
             setPondDucks(newPondDucks);
-            setDucks([...ducks, droppedDuck]);
         }
             
 
@@ -125,7 +137,7 @@ const Counting = () => {
                 onDragOver={handleOnDragOver}
             >
             {ducks.map(duck => (
-                    <Duck key={duck.id} id={duck.id} handleDragStart={handleDragStart} />
+                    <Duck key={duck.id} id={duck.id} handleDragStart={(event, id) => handleDragStart(event, id, 'ducks')} />
                 ))}
 
         </div>
@@ -133,13 +145,14 @@ const Counting = () => {
         <div className='pond'
             onDrop={handleOnDrop}
             onDragOver={handleOnDragOver}
+            draggable="false"
         
         >
             {pondDucks.map((duck, index) => (
                 <Duck 
                     key={duck.id} 
                     id={duck.id} 
-                    handleDragStart={handleDragStart} 
+                    handleDragStart={(event, id) => handleDragStart(event, id, 'pond')} 
                     style={{ zIndex: index }}
                 />
             ))}
