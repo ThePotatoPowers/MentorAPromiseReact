@@ -1,4 +1,4 @@
-import React, {useState, useEffect}    from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './styles/draggable.css';
 import './styles/styles.css';
 import incorrect from './assets/incorrect.svg';
@@ -8,7 +8,6 @@ import pond from './assets/pond.jpg';
 import translate from "translate";
 import nest from './assets/nest.png';
 
-
 const Counting2 = () => {
     const [ducks, setDucks] = useState([]);
     const [pondDucks, setPondDucks] = useState([]);
@@ -16,48 +15,46 @@ const Counting2 = () => {
     const [targetNumber, setTargetNumber] = useState(0);
     const [nestTarget, setNestTarget] = useState(0);
 
-
-    const randRange = (min, max) => {
-        return Math.floor(Math.random()
-            * (max - min + 1)) + min;
-    };
-
-
     const [voices, setVoices] = useState([]);
     const [selectedVoice, setSelectedVoice] = useState(null);
+    const [voicesLoaded, setVoicesLoaded] = useState(false);
+    const initialLoad = useRef(true);
+
+    const randRange = (min, max) => {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+
+    const loadVoices = () => {
+        const synth = window.speechSynthesis;
+        const voices = synth.getVoices();
+        setVoices(voices);
+        const spanishVoice = voices.find(voice => voice.lang.includes('es'));
+        setSelectedVoice(spanishVoice);
+        setVoicesLoaded(true);
+    };
 
     useEffect(() => {
-        // Load available 
-        
-        const loadVoices = (spoken) => {
-            const synth = window.speechSynthesis;
-            const voice = synth.getVoices();
-            setVoices(voice);
-            // Set a Spanish voice if available
-            voices.find(voice => voice.lang.includes('en'));
-            const spanishVoice = voices.find(voice => voice.lang.includes('es'));
-            setSelectedVoice(spanishVoice);
-        };
-
         loadVoices();
-        // Voices might load asynchronously
         window.speechSynthesis.onvoiceschanged = loadVoices;
-    
 
-    const numInitialDucks = randRange(1, 10);
-    const initialDucks = [
-        ...Array(numInitialDucks).keys()
-    ].map(i => ({ id: i }));
+        const numInitialDucks = randRange(1, 10);
+        const initialDucks = [...Array(numInitialDucks).keys()].map(i => ({ id: i }));
+        const target = randRange(1, numInitialDucks - 1);
+        const nestTarget = randRange(1, numInitialDucks - target);
 
-    const target = randRange(1, numInitialDucks-1);
-    const nestTarget = randRange(1, numInitialDucks-target);
-    setTargetNumber(target);
-    setNestTarget(nestTarget);
-    setDucks(initialDucks);
-
-    }, [voices]);
+        setTargetNumber(target);
+        setNestTarget(nestTarget);
+        setDucks(initialDucks);
+    }, []);
 
     useEffect(() => {
+        if (!voicesLoaded || initialLoad.current) {
+            return;
+        }
+
+        if (pondDucks.length === 0 && nestDucks.length === 0) {
+            return;
+        }
 
         console.log(`There are ${pondDucks.length} ducks in the pond and ${nestDucks.length} in the nest`);
 
@@ -65,182 +62,134 @@ const Counting2 = () => {
         let speech = new SpeechSynthesisUtterance(`There are ${pondDucks.length} ducks in the pond and ${nestDucks.length} in the nest`);
         synth.speak(speech);
 
-        translate(`There are ${pondDucks.length} ducks in the pond  and ${nestDucks.length} in the nest`, { from: "en", to: "es" }).then(text => {
+        translate(`There are ${pondDucks.length} ducks in the pond and ${nestDucks.length} in the nest`, { from: "en", to: "es" }).then(text => {
             speech = new SpeechSynthesisUtterance(text);
             if (selectedVoice) {
                 speech.voice = selectedVoice;
             }
             synth.speak(speech);
         });
-    }, [pondDucks, selectedVoice, nestDucks]);
+    }, [pondDucks, nestDucks, voicesLoaded, selectedVoice]);
 
+    useEffect(() => {
+        if (initialLoad.current) {
+            initialLoad.current = false;
+        }
+    }, [voicesLoaded]);
 
     const handleDragStart = (event, id, location) => {
         event.dataTransfer.setData('type', 'duck');
         event.dataTransfer.setData('id', id);
         event.dataTransfer.setData('location', location);
-    }
-    
-    function handleOnDrop(event) {
-        //const type = event.dataTransfer.getData('type');
-        // get type of pond
-        console.log(event);
-        const dropZone = event.target;
-        console.log(dropZone);
-        console.log(dropZone.className);
-        
+    };
 
+    const handleOnDrop = (event) => {
+        const dropZone = event.target;
         const id = parseInt(event.dataTransfer.getData('id'));
 
         if (dropZone.id === 'pondImg') {
             const original = event.dataTransfer.getData('location');
+            if (original === 'pond') return;
 
-            console.log('Duck dropped in pond');
-
-            if (original === 'pond') {
-                return;
-            }
-            else if (original === 'nest') {
+            if (original === 'nest') {
                 const newNestDucks = nestDucks.filter(duck => duck.id !== id);
                 const droppedDuck = nestDucks.find(duck => duck.id === id);
                 setNestDucks(newNestDucks);
                 setPondDucks([...pondDucks, droppedDuck]);
-            }
-
-            else {
+            } else {
                 const newDucks = ducks.filter(duck => duck.id !== id);
                 const droppedDuck = ducks.find(duck => duck.id === id);
                 setDucks(newDucks);
                 setPondDucks([...pondDucks, droppedDuck]);
             }
-
-        }
-        else if (dropZone.id === 'nestImg') {
-            console.log('Duck dropped in nest');
+        } else if (dropZone.id === 'nestImg') {
             const original = event.dataTransfer.getData('location');
+            if (original === 'nest') return;
 
-            if (original === 'nest') {
-                return;
-            }
-            else if (original === 'pond') {
+            if (original === 'pond') {
                 const newPondDucks = pondDucks.filter(duck => duck.id !== id);
                 const droppedDuck = pondDucks.find(duck => duck.id === id);
                 setPondDucks(newPondDucks);
                 setNestDucks([...nestDucks, droppedDuck]);
-            }
-            else {
+            } else {
                 const newDucks = ducks.filter(duck => duck.id !== id);
                 const droppedDuck = ducks.find(duck => duck.id === id);
                 setDucks(newDucks);
                 setNestDucks([...nestDucks, droppedDuck]);
             }
-        }
-
-
-
-        if (dropZone.className === 'ducks') {
-            console.log('Duck dropped in ducks');
+        } else if (dropZone.className === 'ducks') {
             const newPondDucks = pondDucks.filter(duck => duck.id !== id);
             const newNestDucks = nestDucks.filter(duck => duck.id !== id);
 
             const original = event.dataTransfer.getData('location');
-            console.log("Original location: ", original);
-
             const droppedDuck1 = pondDucks.find(duck => duck.id === id);
             const droppedDuck2 = nestDucks.find(duck => duck.id === id);
 
             if (original === 'pond') {
                 setDucks([...ducks, droppedDuck1]);
-            }
-            else if (original === 'nest') {
+            } else if (original === 'nest') {
                 setDucks([...ducks, droppedDuck2]);
-            }
-            else {
+            } else {
                 return;
             }
             setPondDucks(newPondDucks);
             setNestDucks(newNestDucks);
-
         }
-            
+    };
 
-           
-                
-        }
-    
-
-    function handleOnDragOver(event) {
+    const handleOnDragOver = (event) => {
         event.preventDefault();
-    }
+    };
 
-    
+    return (
+        <div className="counting">
+            <h1>Count the Ducks (Level 2)</h1>
 
-    return(
-    <div className="counting">
-        <h1>Count the Ducks (Level 2)</h1>
-
-        <div className="ducks"
-                onDrop={handleOnDrop}
-                onDragOver={handleOnDragOver}
-            >
-            {ducks.map(duck => (
+            <div className="ducks" onDrop={handleOnDrop} onDragOver={handleOnDragOver}>
+                {ducks.map(duck => (
                     <Duck key={duck.id} id={duck.id} handleDragStart={(event, id) => handleDragStart(event, id, 'ducks')} />
                 ))}
+            </div>
 
+            <div className='dropZones'>
+                <div className='pond' onDrop={handleOnDrop} onDragOver={handleOnDragOver} draggable='false'>
+                    {pondDucks.map((duck, index) => (
+                        <Duck
+                            key={duck.id}
+                            id={duck.id}
+                            handleDragStart={(event, id) => handleDragStart(event, id, 'pond')}
+                            style={{ zIndex: index }}
+                        />
+                    ))}
+                    <img id="pondImg" src={pond} alt="pond" draggable="false" />
+                </div>
+
+                <div className='nest' onDrop={handleOnDrop} onDragOver={handleOnDragOver} draggable='false'>
+                    {nestDucks.map((duck, index) => (
+                        <Duck
+                            key={duck.id}
+                            id={duck.id}
+                            handleDragStart={(event, id) => handleDragStart(event, id, 'nest')}
+                            style={{ zIndex: index }}
+                        />
+                    ))}
+                    <img id="nestImg" src={nest} alt="nest" draggable="false" />
+                </div>
+            </div>
+
+            <div className="check">
+                {(pondDucks.length === targetNumber && nestDucks.length === nestTarget) ? (
+                    <button onClick={() => window.location.reload()}>
+                        <img src={correct} alt="correct" />
+                    </button>
+                ) : (
+                    <img src={incorrect} alt="incorrect" />
+                )}
+                <h3>Get {targetNumber} ducks in the pond</h3>
+                <h3>Get {nestTarget} ducks in the nest</h3>
+            </div>
         </div>
-
-        <div className='pond'
-            onDrop={handleOnDrop}
-            onDragOver={handleOnDragOver}
-            draggable='false'
-        
-        >
-            {pondDucks.map((duck, index) => (
-                <Duck 
-                    key={duck.id} 
-                    id={duck.id} 
-                    handleDragStart={(event, id) => handleDragStart(event, id, 'pond')} 
-                    style={{ zIndex: index }}
-                />
-            ))}
-            <img id="pondImg" src={pond} alt="pond" />
-            
-        </div>
-
-        <div className='nest'
-            onDrop={handleOnDrop}
-            onDragOver={handleOnDragOver}
-            draggable='false'
-        
-        >
-            {nestDucks.map((duck, index) => (
-                <Duck 
-                    key={duck.id} 
-                    id={duck.id} 
-                    handleDragStart={(event, id) => handleDragStart(event, id, 'nest')}
-                    style={{ zIndex: index }}
-                />
-            ))}
-            <img id="nestImg" src={nest} alt="nest" />
-            
-        </div>
-
-
-        <div className="check">
-            {(pondDucks.length === targetNumber && nestDucks.length === nestTarget) ? (
-                <button onClick={() => window.location.reload()}>
-                    <img src={correct} alt="correct" />
-                </button>
-            ) : (
-                <img src={incorrect} alt="incorrect" />
-            )}
-            <h3>Get {targetNumber} ducks in the pond</h3>
-            <h3>Get {nestTarget} ducks in the nest</h3>
-        </div>
-
-    </div>  
     );
-
-    };
+};
 
 export default Counting2;

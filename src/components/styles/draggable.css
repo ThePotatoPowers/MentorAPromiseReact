@@ -13,3 +13,11 @@
     justify-content: center;
     margin-top: 5%;
 }
+
+.dropZones {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 5%;
+    width: 100%;
+}

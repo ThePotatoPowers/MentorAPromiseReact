@@ -156,7 +156,7 @@ const Counting = () => {
                     style={{ zIndex: index }}
                 />
             ))}
-            <img id="pondImg" src={pond} alt="pond" />
+            <img id="pondImg" src={pond} alt="pond" draggable="false"/>
             
         </div>
 
