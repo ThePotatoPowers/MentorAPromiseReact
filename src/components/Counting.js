@@ -129,8 +129,11 @@ const Counting = () => {
                     <Duck key={duck.id} id={duck.id} handleDragStart={(event, id) => handleDragStart(event, id, 'ducks')} />
                 ))}
             </div>
+            
+            <center>
 
-            <div className='pond' onDrop={handleOnDrop} onDragOver={handleOnDragOver} draggable='false'>
+            
+            <div className='pond' id="countingPond" onDrop={handleOnDrop} onDragOver={handleOnDragOver} draggable='false'>
                 {pondDucks.map((duck, index) => (
                     <Duck
                         key={duck.id}
@@ -141,7 +144,8 @@ const Counting = () => {
                 ))}
                 <img id="pondImg" src={pond} alt="pond" draggable="false" />
             </div>
-
+            </center>
+            
             <div className="check">
                 {pondDucks.length === targetNumber ? (
                     <button onClick={() => window.location.reload()}>
