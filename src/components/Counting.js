@@ -30,6 +30,20 @@ const Counting = () => {
         setVoicesLoaded(true);
     };
 
+    function sayPond() {
+        const synth = window.speechSynthesis;
+        let speech = new SpeechSynthesisUtterance(`Get ${targetNumber} ducks in the pond`);
+        synth.speak(speech);
+
+        translate(`Get ${targetNumber} ducks in the pond`, { from: "en", to: "es" }).then(text => {
+            speech = new SpeechSynthesisUtterance(text);
+            if (selectedVoice) {
+                speech.voice = selectedVoice;
+            }
+            synth.speak(speech);
+        });
+    }
+
     useEffect(() => {
         loadVoices();
         window.speechSynthesis.onvoiceschanged = loadVoices;
@@ -136,8 +150,19 @@ const Counting = () => {
                 ) : (
                     <img src={incorrect} alt="incorrect" />
                 )}
-                <h3>Get {targetNumber} ducks in the pond</h3>
             </div>
+
+            <center>
+                <div className="targetTexts">
+                <button id="pondTargetText" onClick={() => sayPond()}>
+                    <h3>Get {targetNumber} ducks in the pond</h3>
+                    <h3>Consigue {targetNumber} patos en el estanque </h3>
+                </button>
+
+
+            </div>
+            </center>
+
         </div>
     );
 };

@@ -1,9 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+    font-family: "Montserrat", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+
+}
+
 .ducks {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin-bottom: 5%;
-
     width: 100%;
     border: 1px solid #000;
 }
@@ -11,13 +21,33 @@
 .check {
     flex-wrap: wrap;
     justify-content: center;
-    margin-top: 5%;
 }
 
 .dropZones {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin-top: 5%;
     width: 100%;
+}
+
+.targetTexts {
+    margin-top: 10px;
+    width: 20%;
+    height: 50px;
+}
+
+#pondTargetText {
+    margin-top: 10px;
+    width: 100%;
+
+}
+
+#nestTargetText {
+    margin-top: 10px;
+    width: 100%;
+}
+
+#pondTargetText h3, #nestTargetText h3 {
+    font-family: "Montserrat", sans-serif;
+
 }

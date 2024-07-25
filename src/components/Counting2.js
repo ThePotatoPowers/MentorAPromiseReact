@@ -47,6 +47,33 @@ const Counting2 = () => {
         setDucks(initialDucks);
     }, []);
 
+    function sayPond() {
+        const synth = window.speechSynthesis;
+        let speech = new SpeechSynthesisUtterance(`Get ${targetNumber} ducks in the pond`);
+        synth.speak(speech);
+
+        translate(`Get ${targetNumber} ducks in the pond`, { from: "en", to: "es" }).then(text => {
+            speech = new SpeechSynthesisUtterance(text);
+            if (selectedVoice) {
+                speech.voice = selectedVoice;
+            }
+            synth.speak(speech);
+        });
+    }
+
+    function sayNest() {
+        const synth = window.speechSynthesis;
+        let speech = new SpeechSynthesisUtterance(`Get ${nestTarget} ducks in the nest`);
+        synth.speak(speech);
+        translate(`Get ${nestTarget} ducks in the nest`, { from: "en", to: "es" }).then(text => {
+            speech = new SpeechSynthesisUtterance(text);
+            if (selectedVoice) {
+                speech.voice = selectedVoice;
+            }
+            synth.speak(speech);
+        });
+    }
+
     useEffect(() => {
         if (!voicesLoaded || initialLoad.current) {
             return;
@@ -185,13 +212,25 @@ const Counting2 = () => {
                 ) : (
                     <img src={incorrect} alt="incorrect" />
                 )}
-                <button onClick={() => window.location.reload()}>
+                
+            </div>
+
+            <center>
+                <div className="targetTexts">
+                <button id="pondTargetText" onClick={() => sayPond()}>
                     <h3>Get {targetNumber} ducks in the pond</h3>
+                    <h3>Consigue {targetNumber} patos en el estanque </h3>
                 </button>
 
                 
-                <h3>Get {nestTarget} ducks in the nest</h3>
+                <button id="nestTargetText" onClick={() => sayNest()}>
+                    <h3>Get {nestTarget} ducks in the nest</h3>
+                    <h3>Consigue {targetNumber} patos en el nido</h3>
+                </button>
+
             </div>
+            </center>
+            
         </div>
     );
 };
