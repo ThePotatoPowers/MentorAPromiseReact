@@ -185,7 +185,11 @@ const Counting2 = () => {
                 ) : (
                     <img src={incorrect} alt="incorrect" />
                 )}
-                <h3>Get {targetNumber} ducks in the pond</h3>
+                <button onClick={() => window.location.reload()}>
+                    <h3>Get {targetNumber} ducks in the pond</h3>
+                </button>
+
+                
                 <h3>Get {nestTarget} ducks in the nest</h3>
             </div>
         </div>
