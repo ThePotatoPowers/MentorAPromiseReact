@@ -183,7 +183,7 @@ const Counting2 = () => {
             </div>
 
             <div className='dropZones'>
-                <div className='pond' onDrop={handleOnDrop} onDragOver={handleOnDragOver} draggable='false'>
+                <div className='pond' id="countingPond" onDrop={handleOnDrop} onDragOver={handleOnDragOver} draggable='false'>
                     {pondDucks.map((duck, index) => (
                         <Duck
                             key={duck.id}
