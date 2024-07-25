@@ -5,7 +5,7 @@ import Counting from "./components/Counting";
 import Counting2 from "./components/Counting2";
 import Navbar from "./components/Navbar";
 import {
-    BrowserRouter as Router,
+    HashRouter as Router,
     Routes,
     Route,
 } from "react-router-dom";
