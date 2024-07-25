@@ -6,8 +6,11 @@ import correct from './assets/check.svg';
 import Duck from './Duck';
 import pond from './assets/pond.jpg';
 import translate from "translate";
+import useWindowSize from 'react-use/lib/useWindowSize'
+import Confetti from 'react-confetti'
 
 const Counting = () => {
+    const { width, height } = useWindowSize()
     const [ducks, setDucks] = useState([]);
     const [pondDucks, setPondDucks] = useState([]);
     const [targetNumber, setTargetNumber] = useState(0);
@@ -148,9 +151,13 @@ const Counting = () => {
             
             <div className="check">
                 {pondDucks.length === targetNumber ? (
+                    <div>
+                        
                     <button onClick={() => window.location.reload()}>
                         <img src={correct} alt="correct" />
                     </button>
+                    <Confetti width={width} height={height} />
+                    </div>
                 ) : (
                     <img src={incorrect} alt="incorrect" />
                 )}
