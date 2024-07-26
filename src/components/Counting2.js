@@ -18,6 +18,7 @@ const Counting2 = () => {
     const [nestDucks, setNestDucks] = useState([]);
     const [targetNumber, setTargetNumber] = useState(0);
     const [nestTarget, setNestTarget] = useState(0);
+    const [englishVoice, setEnglishVoice] = useState(null);
 
     const [voices, setVoices] = useState([]);
     const [selectedVoice, setSelectedVoice] = useState(null);
@@ -32,10 +33,28 @@ const Counting2 = () => {
         const synth = window.speechSynthesis;
         const voices = synth.getVoices();
         setVoices(voices);
-        const spanishVoice = voices.find(voice => voice.lang.includes('es'));
-        setSelectedVoice(spanishVoice);
+        
+        const english = voices.find(voice => voice.name.includes('Google US English'));
+        if (!english) {
+            setEnglishVoice(voices.find(voice => voice.lang.includes('en')));
+        }
+        else {
+            setEnglishVoice(english);
+
+        }
+
+        const spanishVoice = voices.find(voice => voice.name.includes('Google español'));
+        if (!spanishVoice) {
+            setSelectedVoice(voices.find(voice => voice.lang.includes('es')));
+        }
+        else{
+            setSelectedVoice(spanishVoice);
+
+        }
+
         setVoicesLoaded(true);
     };
+
 
     useEffect(() => {
         loadVoices();
@@ -54,6 +73,9 @@ const Counting2 = () => {
     function sayPond() {
         const synth = window.speechSynthesis;
         let speech = new SpeechSynthesisUtterance(`Get ${targetNumber} ducks in the pond`);
+        if (englishVoice) {
+            speech.voice = englishVoice;
+        }
         synth.speak(speech);
 
         translate(`Get ${targetNumber} ducks in the pond`, { from: "en", to: "es" }).then(text => {
@@ -91,6 +113,9 @@ const Counting2 = () => {
 
         const synth = window.speechSynthesis;
         let speech = new SpeechSynthesisUtterance(`There are ${pondDucks.length} ducks in the pond and ${nestDucks.length} in the nest`);
+        if (englishVoice) {
+            speech.voice = englishVoice;
+        }
         synth.speak(speech);
 
         translate(`There are ${pondDucks.length} ducks in the pond and ${nestDucks.length} in the nest`, { from: "en", to: "es" }).then(text => {
