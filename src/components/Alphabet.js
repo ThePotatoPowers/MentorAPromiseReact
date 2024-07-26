@@ -67,17 +67,32 @@ const Alphabet = () => {
         e.preventDefault();
     };
 
+    const handleClick = (e, letter) => {
+        e.preventDefault();
+        setTargetLetter(letter);
+        const synth = window.speechSynthesis;
+        const utterThis = new SpeechSynthesisUtterance(letter);
+        utterThis.voice = englishVoice;
+        synth.speak(utterThis);
+
+        translate(letter, { from: 'en', to: 'es' }).then((res) => {
+            const utterThis = new SpeechSynthesisUtterance(res);
+            utterThis.voice = spanishVoice;
+            synth.speak(utterThis);
+        });
+    }
+
     return (
         <div className="alphabet">
             <center>
-                <h1><u>Alphabet</u></h1>
+                <h1><u>Alphabet (WIP)</u></h1>
             </center>
             <div className="letters">
                 {letters.map((letter, i) => (
                     <Letter
                         key={i}
                         letter={letter}
-                        handleDragStart={handleDragStart}
+                        onClick={handleClick}
 
                     />
                 ))}

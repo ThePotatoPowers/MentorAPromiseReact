@@ -2,14 +2,14 @@ import React from 'react';
 import './styles/styles.css';
 
 
-const Letter = ({ letter, handleDragStart }) => {
+const Letter = ({ letter, onClick }) => {
 
 
   return (
     <h2
       className='letter' 
       draggable='true' 
-      onDragStart={(e) => handleDragStart(e, letter)} 
+      onClick={(e) => onClick(e, letter)}
       alt="letter" 
       >
         {letter.toUpperCase()}
