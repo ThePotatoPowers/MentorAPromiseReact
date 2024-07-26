@@ -10,9 +10,9 @@ const Letter = ({ letter, handleDragStart }) => {
       className='letter' 
       draggable='true' 
       onDragStart={(e) => handleDragStart(e, letter)} 
-      src={duck} 
       alt="letter" 
       >
+        {letter.toUpperCase()}
 
       </h2>
 
@@ -21,4 +21,4 @@ const Letter = ({ letter, handleDragStart }) => {
 }
 
 
-export default Duck;
+export default Letter;

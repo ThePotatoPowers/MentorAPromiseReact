@@ -153,7 +153,7 @@ const Counting = () => {
 
             <div className="ducks" onDrop={handleOnDrop} onDragOver={handleOnDragOver}>
                 {ducks.map(duck => (
-                    <Duck  id={duck.id} handleDragStart={(event, id) => handleDragStart(event, id, 'ducks')} />
+                    <Duck key={duck.id} id={duck.id} handleDragStart={(event, id) => handleDragStart(event, id, 'ducks')} />
                 ))}
             </div>
             
@@ -163,6 +163,7 @@ const Counting = () => {
             <div className='pond' id="countingPond" onDrop={handleOnDrop} onDragOver={handleOnDragOver} draggable='false'>
                 {pondDucks.map((duck, index) => (
                     <Duck
+                        key={duck.id}
                         id={duck.id}
                         handleDragStart={(event, id) => handleDragStart(event, id, 'pond')}
                         style={{ zIndex: index }}

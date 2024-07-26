@@ -22,6 +22,9 @@ const Navbar = () => {
                     <NavLink to="/counting2" onClick={() => setIsOpen(false)}>
                         Counting 2
                     </NavLink>
+                    <NavLink to="/alphabet" onClick={() => setIsOpen(false)}>
+                        Alphabet
+                    </NavLink>
                 </NavMenu>
             </Nav>
         </>
