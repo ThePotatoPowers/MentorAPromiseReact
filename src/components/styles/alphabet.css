@@ -1,0 +1,33 @@
+.checkButtonsImg {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.checkButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.target {
+    font-size: 1.5em;
+    text-align: center;
+    line-height: 50px;
+}
+
+
+
+.shake {
+  animation: shake 0.5s linear;
+  background-color: #f08080;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-30px); }
+  50% { transform: translateX(30px); }
+  75% { transform: translateX(-30px); }
+  100% { transform: translateX(0); }
+}

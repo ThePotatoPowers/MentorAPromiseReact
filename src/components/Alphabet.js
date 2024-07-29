@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './styles/draggable.css';
 import './styles/styles.css';
+import './styles/alphabet.css';
 import translate from "translate";
 import useWindowSize from 'react-use/lib/useWindowSize'
 import Confetti from 'react-confetti'
 import Letter from './Letter';
+import { generate, count } from "random-words";
+import deleteImg from './assets/delete.png';
+import check from './assets/check.svg';
 
 const Alphabet = () => {
     const { width, height } = useWindowSize()
@@ -15,6 +19,8 @@ const Alphabet = () => {
     const [englishVoice, setEnglishVoice] = useState(null);
     const [voicesLoaded, setVoicesLoaded] = useState(false);
     const initialLoad = useRef(true);
+    const [word, setWord] = useState('_ _ _');
+    
 
    const loadVoices = () => {
         const synth = window.speechSynthesis;
@@ -59,15 +65,9 @@ const Alphabet = () => {
 
     }, []);
 
-    const handleDragStart = (e, letter) => {
-        e.dataTransfer.setData('text/plain', letter);
-    };
 
-    const handleDragOver = (e) => {
-        e.preventDefault();
-    };
 
-    const handleClick = (e, letter) => {
+    const handleClick = (e, letter) => { // speaks the letter in English and Spanish
         e.preventDefault();
         setTargetLetter(letter);
         const synth = window.speechSynthesis;
@@ -80,7 +80,37 @@ const Alphabet = () => {
             utterThis.voice = spanishVoice;
             synth.speak(utterThis);
         });
+        let newWord = word + letter;
+        if (newWord[0] === '_') {
+            newWord = newWord.substring(1);
+            newWord = newWord.substring(newWord.indexOf('_'));
+        }
+
+        setWord(newWord);
     }
+
+    const checkWord = () => {
+        const synth = window.speechSynthesis;
+        if (!word.includes('_')) {
+            const utterThis = new SpeechSynthesisUtterance(word);
+            utterThis.voice = englishVoice;
+            synth.speak(utterThis);
+
+            translate(word, { from: 'en', to: 'es' }).then((res) => {
+                const utterThis = new SpeechSynthesisUtterance(res);
+                utterThis.voice = spanishVoice;
+                synth.speak(utterThis);
+            });
+        }
+        else {
+            document.getElementsByClassName('alphabet')[0].classList.add('shake');
+            setTimeout(() => {
+                document.getElementsByClassName('alphabet')[0].classList.remove('shake');
+            }, 1000);
+        }
+    }
+
+
 
     return (
         <div className="alphabet">
@@ -98,6 +128,28 @@ const Alphabet = () => {
                 ))}
             </div>
             
+            <div className="wordbuilder">
+                <h1>Word Builder</h1>
+
+                <center>
+                    <div
+                    className="target"
+                    onDrop={(e) => setTargetLetter(e.dataTransfer.getData('text/plain'))} >
+                        
+                    {word}
+                </div>
+                
+                
+
+                <button className="checkButtons" onClick={() => setWord('_ _ _')}>
+                    <img className="checkButtonsImg" src={deleteImg} alt="delete" />
+                </button>
+
+                <button className="checkButtons" onClick={() => checkWord()} >
+                    <img className="checkButtonsImg" src={check} alt="submit" />
+                </button>
+                </center>
+            </div>
 
         </div>
 
