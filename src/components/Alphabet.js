@@ -6,19 +6,17 @@ import translate from "translate";
 import useWindowSize from 'react-use/lib/useWindowSize'
 import Confetti from 'react-confetti'
 import Letter from './Letter';
-import { generate, count } from "random-words";
+//import { generate, count } from "random-words";
 import deleteImg from './assets/delete.png';
 import check from './assets/check.svg';
 
 const Alphabet = () => {
     const { width, height } = useWindowSize()
     const [letters, setLetters] = useState([]);
-    const [targetLetter, setTargetLetter] = useState('');
     const [voices, setVoices] = useState([]);
     const [spanishVoice, setSpanishVoice] = useState(null);
     const [englishVoice, setEnglishVoice] = useState(null);
     const [voicesLoaded, setVoicesLoaded] = useState(false);
-    const initialLoad = useRef(true);
     const [word, setWord] = useState('_ _ _');
     
 
@@ -69,7 +67,6 @@ const Alphabet = () => {
 
     const handleClick = (e, letter) => { // speaks the letter in English and Spanish
         e.preventDefault();
-        setTargetLetter(letter);
         const synth = window.speechSynthesis;
         const utterThis = new SpeechSynthesisUtterance(letter);
         utterThis.voice = englishVoice;
@@ -101,6 +98,7 @@ const Alphabet = () => {
                 utterThis.voice = spanishVoice;
                 synth.speak(utterThis);
             });
+            <Confetti width={width} height={height} />
         }
         else {
             document.getElementsByClassName('alphabet')[0].classList.add('shake');
@@ -132,9 +130,8 @@ const Alphabet = () => {
                 <h1>Word Builder</h1>
 
                 <center>
-                    <div
-                    className="target"
-                    onDrop={(e) => setTargetLetter(e.dataTransfer.getData('text/plain'))} >
+                    <div className="target">
+                    
                         
                     {word}
                 </div>
