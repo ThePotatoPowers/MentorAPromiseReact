@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/MentorAPromiseReact/static/css/main.bba8fd6a.css",
-    "main.js": "/MentorAPromiseReact/static/js/main.e7c497a0.js",
+    "main.css": "/MentorAPromiseReact/static/css/main.e2fb85a7.css",
+    "main.js": "/MentorAPromiseReact/static/js/main.ede9a717.js",
     "static/js/453.bd4dd74e.chunk.js": "/MentorAPromiseReact/static/js/453.bd4dd74e.chunk.js",
     "static/media/nest.png": "/MentorAPromiseReact/static/media/nest.3a279d1929bc426a5311.png",
     "static/media/pond.jpg": "/MentorAPromiseReact/static/media/pond.111dcbb5627fb7de83ad.jpg",
     "static/media/incorrect.svg": "/MentorAPromiseReact/static/media/incorrect.c6285bea5dbfbd2f2e7299a857643ed2.svg",
     "index.html": "/MentorAPromiseReact/index.html",
     "static/media/check.svg": "/MentorAPromiseReact/static/media/check.4f1d73ffaaf46f6c5367b635b0117642.svg",
-    "main.bba8fd6a.css.map": "/MentorAPromiseReact/static/css/main.bba8fd6a.css.map",
-    "main.e7c497a0.js.map": "/MentorAPromiseReact/static/js/main.e7c497a0.js.map",
+    "main.e2fb85a7.css.map": "/MentorAPromiseReact/static/css/main.e2fb85a7.css.map",
+    "main.ede9a717.js.map": "/MentorAPromiseReact/static/js/main.ede9a717.js.map",
     "453.bd4dd74e.chunk.js.map": "/MentorAPromiseReact/static/js/453.bd4dd74e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.bba8fd6a.css",
-    "static/js/main.e7c497a0.js"
+    "static/css/main.e2fb85a7.css",
+    "static/js/main.ede9a717.js"
   ]
 }
