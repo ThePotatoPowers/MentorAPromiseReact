@@ -25,6 +25,10 @@ const Navbar = () => {
                     <NavLink to="/alphabet" onClick={() => setIsOpen(false)}>
                         Alphabet
                     </NavLink>
+                    <NavLink to="/assessment" onClick={() => setIsOpen(false)}>
+                        Assessment
+                    </NavLink>
+
                 </NavMenu>
             </Nav>
         </>

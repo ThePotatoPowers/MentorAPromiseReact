@@ -5,6 +5,7 @@ import Counting from "./components/Counting";
 import Counting2 from "./components/Counting2";
 import Navbar from "./components/Navbar";
 import Alphabet from "./components/Alphabet";
+import Assessment from "./components/Assessment";
 import {
     HashRouter as Router,
     Routes,
@@ -25,6 +26,7 @@ function App() {
                 />
                 <Route path="*" element={<Home />} />
                 <Route path="/alphabet" element={<Alphabet />} />
+                <Route path="/assessment" element={<Assessment />} />
             </Routes>
       </Router>
     </div>

@@ -13,17 +13,14 @@ import check from './assets/check.svg';
 const Alphabet = () => {
     const { width, height } = useWindowSize()
     const [letters, setLetters] = useState([]);
-    const [voices, setVoices] = useState([]);
     const [spanishVoice, setSpanishVoice] = useState(null);
     const [englishVoice, setEnglishVoice] = useState(null);
-    const [voicesLoaded, setVoicesLoaded] = useState(false);
     const [word, setWord] = useState('_ _ _');
     
 
    const loadVoices = () => {
         const synth = window.speechSynthesis;
         const voices = synth.getVoices();
-        setVoices(voices);
         
         const english = voices.find(voice => voice.name.includes('Google US English'));
         if (!english) {
@@ -42,8 +39,6 @@ const Alphabet = () => {
             setSpanishVoice(spanishVoice);
 
         }
-
-        setVoicesLoaded(true);
     };
 
 
