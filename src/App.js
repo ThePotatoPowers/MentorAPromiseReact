@@ -6,6 +6,7 @@ import Counting2 from "./components/Counting2";
 import Navbar from "./components/Navbar";
 import Alphabet from "./components/Alphabet";
 import Assessment from "./components/Assessment";
+import Admin from "./components/Admin";
 import {
     HashRouter as Router,
     Routes,
@@ -27,6 +28,7 @@ function App() {
                 <Route path="*" element={<Home />} />
                 <Route path="/alphabet" element={<Alphabet />} />
                 <Route path="/assessment" element={<Assessment />} />
+                <Route path="/admin" element={<Admin />} />
             </Routes>
       </Router>
     </div>

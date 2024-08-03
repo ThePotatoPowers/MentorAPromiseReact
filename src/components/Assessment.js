@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './styles/styles.css';
+import './styles/assessment.css';
 import translate from "translate";
 
 const Assessment = () => {
@@ -7,6 +8,8 @@ const Assessment = () => {
     const [spanishVoice, setSpanishVoice] = useState(null);
     const [englishVoice, setEnglishVoice] = useState(null);
     const [questions, setQuestions] = useState([]);
+    const [verified, setVerified] = useState(false);
+    const [user, setUser] = useState({ name: "", id: "" });
 
    const loadVoices = () => {
         const synth = window.speechSynthesis;
@@ -51,14 +54,16 @@ const Assessment = () => {
     function sendUserInfo() {
         const name = document.getElementById("nameInput").value;
         const id = document.getElementById("idInput").value;
+        setUser({ name, id });
         console.log(name, id);
+        console.log(user);
         fetch("http://localhost:9000/api/user"
             , {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name, id }),
+                body: JSON.stringify({name , id}),
     })
             .then((res) => res.json())
             .then((data) => {
@@ -72,7 +77,6 @@ const Assessment = () => {
     }
 
     function submitQuestions() {
-        sendUserInfo();
         const answers = [];
         for (let i = 0; i < 3; i++) {
             answers.push(document.getElementById(`answer${i}`).value);
@@ -110,11 +114,12 @@ const Assessment = () => {
                 <br />
                 <input type="text" id="idInput" placeholder="Enter your id number" />
                 <br />
+                <button onClick={sendUserInfo}>Submit</button>
 
             </div>
 
 
-            <div>
+            <div className="questions">
                 <h2>Question</h2>
                 {/* display the first question and answer*/}
                 <h3>{questions.length > 0 ? questions[0].question : "Loading..."}</h3>

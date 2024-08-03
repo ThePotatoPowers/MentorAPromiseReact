@@ -36,9 +36,30 @@ app.get("/api/questions", (req, res) => {
 
 app.post("/api/user", (req, res) => {
     console.log(req.body);
-    res.send({info: "User data received"});
+    
+
 
 });
+
+
+app.post("/api/addStudent", (req, res) => {
+
+});
+
+
+app.post("/api/auth", (req, res) => {
+    let username = req.body.username;
+    let password = req.body.password;
+    if (username === "admin" && password === "admin") {
+        res.send({info: "Login successful", status: "success"});
+    } else {
+        res.send({info: "Login failed", status: "failed"});
+    }
+    
+    
+
+});
+
 
 app.post("/api/answers", (req, res) => {
     console.log(req.body);
