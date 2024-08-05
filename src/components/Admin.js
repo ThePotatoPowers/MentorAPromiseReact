@@ -27,6 +27,16 @@ const Admin = () => {
                     document.querySelector(".addStudent").style.display = "block";
                     document.querySelector(".addAdmin").style.display = "block";
                     document.querySelector(".addQuestion").style.display = "block";
+
+                    let questionList = document.querySelector(".questionList");
+                    questionList.innerHTML = "<h3>Questions</h3>";
+                    data.questions.forEach((question) => {
+                        console.log(question);
+                        questionList.innerHTML += `<p>${question.question}</p>`;
+                        questionList.innerHTML += `<p><b>${question.answer}<b></p>`;
+                    });
+
+
                     // remove submit button
                     document.querySelector(".userInfo").style.display = "none";
                     alert("Login successful");
@@ -154,6 +164,11 @@ const Admin = () => {
                 <input type="text" id="answer" placeholder="Enter answer" />
                 <br />
                 <button onClick={sendQuestionInfo}>Submit</button>
+            </div>
+
+
+            <div className="questionList">
+
             </div>
             
 

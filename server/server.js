@@ -52,23 +52,7 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-const questions = [
-    {
-        id: 1,
-        question: "What is your name?",
-        answer: "My name is John Doe"
-    },
-    {
-        id: 2,
-        question: "What is your age?",
-        answer: "I am 25 years old"
-    },
-    {
-        id: 3,
-        question: "What is your location?",
-        answer: "I am from New York"
-    }
-]
+
 
 
 app.get("/api/questions", (req, res) => {
@@ -169,22 +153,34 @@ app.post("/api/addQuestion", (req, res) => {
 app.post("/api/auth", (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
+    
+    // Query to find admin with given username and password
     let query = Admin.find({username, password});
+    
     query.exec(function(err, admins) {
         if (err) {
             res.send({info: "Error", status: "failed"});
         } else {
             if (admins.length > 0) {
-                res.send({info: "Login successful", status: "success"});
+                // If admin is found, retrieve all questions
+                Question.find({}, function(err, questions) {
+                    if (err) {
+                        res.send({info: "Error retrieving questions", status: "failed"});
+                    } else {
+                        res.send({
+                            info: "Login successful", 
+                            status: "success", 
+                            questions: questions.length > 0 ? questions : []
+                        });
+                    }
+                });
             } else {
                 res.send({info: "Login failed", status: "failed"});
             }
         }
     });
-    
-    
-
 });
+
 
 
 app.post("/api/answers", (req, res) => {
