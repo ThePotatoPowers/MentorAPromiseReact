@@ -36,6 +36,15 @@ const Admin = () => {
                         questionList.innerHTML += `<p><b>${question.answer}<b></p>`;
                     });
 
+                    let studentList = document.querySelector(".studentList");
+                    studentList.innerHTML = "<h3>Students</h3>";
+                    data.grades.forEach((grade) => {
+                        console.log(grade);
+                        studentList.innerHTML += `<p>Name: ${grade.name}</p>`;
+                        studentList.innerHTML += `<p>ID: <b>${grade.id}<b></p>`;
+                        studentList.innerHTML += `<p>Grade: <b>${grade.grade}<b></p>`;
+                    });
+
 
                     // remove submit button
                     document.querySelector(".userInfo").style.display = "none";
@@ -168,6 +177,10 @@ const Admin = () => {
 
 
             <div className="questionList">
+
+            </div>
+
+            <div className="studentList">
 
             </div>
             
