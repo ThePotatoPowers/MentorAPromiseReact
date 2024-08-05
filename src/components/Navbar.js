@@ -28,6 +28,9 @@ const Navbar = () => {
                     <NavLink to="/assessment" onClick={() => setIsOpen(false)}>
                         Assessment
                     </NavLink>
+                    <NavLink to="/admin" onClick={() => setIsOpen(false)}>
+                        Admin
+                    </NavLink>
 
                 </NavMenu>
             </Nav>

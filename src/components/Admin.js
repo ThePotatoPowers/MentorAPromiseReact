@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState} from 'react';
 import './styles/styles.css';
 import './styles/assessment.css';
-import translate from "translate";
 
 const Admin = () => {
 
-    const [verified, setVerified] = useState(false);
     const [user, setUser] = useState({ name: "", id: "" });
     const [admin, setAdmin] = useState({ username: "", password: "" });
    
@@ -27,8 +25,11 @@ const Admin = () => {
             .then((data) => {
                 if (data.status === "success") {
                     document.querySelector(".addStudent").style.display = "block";
+                    document.querySelector(".addAdmin").style.display = "block";
+                    document.querySelector(".addQuestion").style.display = "block";
                     // remove submit button
-                    document.getElementById("loginButton").style.display = "none";
+                    document.querySelector(".userInfo").style.display = "none";
+                    alert("Login successful");
                 }
                 else {
                     alert("Login failed");
@@ -37,8 +38,7 @@ const Admin = () => {
             });
 
 
-            document.getElementById("usernameInput").value = "";
-            document.getElementById("passwordInput").value = "";
+            
 
 
     }
@@ -64,7 +64,52 @@ const Admin = () => {
             
 
     }
+
+    function sendAdminInfo() {
+        const adminName = document.getElementById("adminName").value;
+        const adminPassword = document.getElementById("adminPassword").value;
+        alert(adminName + " " + adminPassword);
+        fetch("http://localhost:9000/api/addAdmin"
+            , {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({adminName , adminPassword}),
+    })
+            .then((res) => res.json())
+            .then((data) => {
+                alert(data.info);
+            });
+
+            document.getElementById("adminName").value = "";
+            document.getElementById("adminPassword").value = "";
+            
+
+    }
     
+    function sendQuestionInfo() {
+        const question = document.getElementById("question").value;
+        const answer = document.getElementById("answer").value;
+        alert(question + " " + answer);
+        fetch("http://localhost:9000/api/addQuestion"
+            , {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({question , answer}),
+    })
+            .then((res) => res.json())
+            .then((data) => {
+                alert(data.info);
+            });
+
+            document.getElementById("question").value = "";
+            document.getElementById("answer").value = "";
+            
+
+    }
 
 
 
@@ -94,7 +139,22 @@ const Admin = () => {
                 <button onClick={sendStudentInfo}>Submit</button>
 
             </div>
+
+            <div className="addAdmin">
+                <input type="text" id="adminName" placeholder="Enter admin's username" />
+                <br />
+                <input type="text" id="adminPassword" placeholder="Enter admin's password" />
+                <br />
+                <button onClick={sendAdminInfo}>Submit</button>
+            </div>
             
+            <div className="addQuestion">
+                <input type="text" id="question" placeholder="Enter question" />
+                <br />
+                <input type="text" id="answer" placeholder="Enter answer" />
+                <br />
+                <button onClick={sendQuestionInfo}>Submit</button>
+            </div>
             
 
         </div>

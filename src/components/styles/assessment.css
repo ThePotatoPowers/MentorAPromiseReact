@@ -2,6 +2,8 @@
   display: none;
 }
 
-.addStudent {
+.addStudent, .addAdmin, .addQuestion {
   display: none;
+  margin: 10px;
+
 }
