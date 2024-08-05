@@ -39,7 +39,7 @@ const Assessment = () => {
         loadVoices();
         window.speechSynthesis.onvoiceschanged = loadVoices;
 
-        fetch("http://localhost:9000/api/questions")
+        fetch("https://mentor-a-promise-server.vercel.app/api/questions")
             .then((res) => res.json())
             .then((data) => {
                 setQuestions(data.questions);
@@ -68,7 +68,7 @@ const Assessment = () => {
         const name = document.getElementById("nameInput").value.trim();
         const id = document.getElementById("idInput").value.trim();;
         setUser({ name, id });
-        fetch("http://localhost:9000/api/user"
+        fetch("https://mentor-a-promise-server.vercel.app/api/user"
             , {
                 method: 'POST',
                 headers: {
@@ -99,7 +99,7 @@ const Assessment = () => {
             const answer = document.getElementById(`answer${index}`).value.trim();;
             answers.push({ question: question.question, answer});
         });
-        fetch("http://localhost:9000/api/answers"
+        fetch("https://mentor-a-promise-server.vercel.app/api/answers"
             , {
                 method: 'POST',
                 headers: {

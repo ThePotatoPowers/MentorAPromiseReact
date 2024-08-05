@@ -13,7 +13,7 @@ const Admin = () => {
         const password = document.getElementById("passwordInput").value.trim();;
         setAdmin({ username, password });
 
-        fetch("http://localhost:9000/api/auth"
+        fetch("https://mentor-a-promise-server.vercel.app/api/auth"
             , {
                 method: 'POST',
                 headers: {
@@ -65,7 +65,7 @@ const Admin = () => {
     function sendStudentInfo() {
         const studentName = document.getElementById("studentName").value.trim();;
         const studentID = document.getElementById("studentID").value.trim();;
-        fetch("http://localhost:9000/api/addStudent"
+        fetch("https://mentor-a-promise-server.vercel.app/api/addStudent"
             , {
                 method: 'POST',
                 headers: {
@@ -88,7 +88,7 @@ const Admin = () => {
         const adminName = document.getElementById("adminName").value.trim();;
         const adminPassword = document.getElementById("adminPassword").value.trim();;
         alert(adminName + " " + adminPassword);
-        fetch("http://localhost:9000/api/addAdmin"
+        fetch("https://mentor-a-promise-server.vercel.app/api/addAdmin"
             , {
                 method: 'POST',
                 headers: {
@@ -111,7 +111,7 @@ const Admin = () => {
         const question = document.getElementById("question").value.trim();;
         const answer = document.getElementById("answer").value.trim();;
         alert(question + " " + answer);
-        fetch("http://localhost:9000/api/addQuestion"
+        fetch("https://mentor-a-promise-server.vercel.app/api/addQuestion"
             , {
                 method: 'POST',
                 headers: {
