@@ -200,27 +200,21 @@ app.post("/api/auth", (req, res) => {
                     if (err) {
                         res.send({info: "Error retrieving questions", status: "failed"});
                     } else {
-                        // Retrieve all students
-                        Student.find({}, function(err, students) {
+                        Grade.find({}, function(err, grades) {
                             if (err) {
-                                res.send({info: "Error retrieving students", status: "failed"});
+                                res.send({info: "Error retrieving grades", status: "failed"});
                             } else {
-                                // Retrieve all grades
-                                Grade.find({}, function(err, grades) {
-                                    if (err) {
-                                        res.send({info: "Error retrieving grades", status: "failed"});
-                                    } else {
-                                        console.log(grades);
-                                        res.send({
-                                            info: "Login successful", 
-                                            status: "success", 
-                                            questions: questions.length > 0 ? questions : [],
-                                            grades: grades
-                                        });
-                                    }
+                                console.log(grades);
+                                res.send({
+                                    info: "Login successful", 
+                                    status: "success", 
+                                    questions: questions.length > 0 ? questions : [],
+                                    grades: grades
                                 });
                             }
                         });
+                            
+                        
                     }
                 });
             } else {
