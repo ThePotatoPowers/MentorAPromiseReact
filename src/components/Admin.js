@@ -141,6 +141,7 @@ const Admin = () => {
             </center>
             
             <div className="userInfo">
+                <h3>Login</h3>
                 <input type="text" id="usernameInput" placeholder="Enter your username" />
                 <br />
                 <input type="text" id="passwordInput" placeholder="Enter your password" />
@@ -151,6 +152,7 @@ const Admin = () => {
 
 
             <div className="addStudent">
+                <h3>Add Student</h3>
                 <input type="text" id="studentName" placeholder="Enter student's name" />
                 <br />
                 <input type="text" id="studentID" placeholder="Enter student's id" />
@@ -160,6 +162,7 @@ const Admin = () => {
             </div>
 
             <div className="addAdmin">
+                <h3>Add Admin</h3>
                 <input type="text" id="adminName" placeholder="Enter admin's username" />
                 <br />
                 <input type="text" id="adminPassword" placeholder="Enter admin's password" />
@@ -168,6 +171,7 @@ const Admin = () => {
             </div>
             
             <div className="addQuestion">
+                <h3>Add Question</h3>
                 <input type="text" id="question" placeholder="Enter question" />
                 <br />
                 <input type="text" id="answer" placeholder="Enter answer" />
