@@ -64,7 +64,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
-
+app.get("/", (req, res) => {
+    return("Hello World");
+});
 
 app.get("/api/questions", (req, res) => {
     Question.find({}, function(err, questions) {
