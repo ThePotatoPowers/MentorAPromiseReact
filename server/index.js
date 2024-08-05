@@ -71,6 +71,7 @@ app.get("/", (req, res) => {
 app.get("/api/questions", (req, res) => {
     Question.find({}, function(err, questions) {
         if (err) {
+            console.log("Error retrieving questions:", err);
             res.send({info: "Error retrieving questions", status: "failed"});
         } else {
             res.send({info: "Questions retrieved", status: "success", questions: questions});
@@ -92,6 +93,7 @@ app.post("/api/user", (req, res) => {
             if (students.length > 0) {
                 res.send({info: "Login successful", status: "success", student: students[0]});
             } else {
+                console.log("Student not found", err);
                 res.send({info: "Login failed", status: "failed", student: {name: "", id: ""}});
             }
         }
