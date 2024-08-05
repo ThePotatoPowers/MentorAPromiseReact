@@ -1,10 +1,11 @@
-.questions {
+.questions, #submitQuestions {
   display: none;
+  margin: 10px;
 }
 
 .addStudent, .addAdmin, .addQuestion {
   display: none;
   margin: 10px;
-  
+
 
 }

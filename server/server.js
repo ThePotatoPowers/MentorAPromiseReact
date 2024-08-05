@@ -56,11 +56,33 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 
 app.get("/api/questions", (req, res) => {
-    res.send(questions);
+    Question.find({}, function(err, questions) {
+        if (err) {
+            res.send({info: "Error retrieving questions", status: "failed"});
+        } else {
+            res.send({info: "Questions retrieved", status: "success", questions: questions});
+        }
+    });
 });
 
 app.post("/api/user", (req, res) => {
-    console.log(req.body);
+    let name = req.body.name;
+    let id = req.body.id;
+    
+    // Query to find admin with given username and password
+    let query = Student.find({name, id});
+    
+    query.exec(function(err, students) {
+        if (err) {
+            res.send({info: "Error", status: "failed"});
+        } else {
+            if (students.length > 0) {
+                res.send({info: "Login successful", status: "success", student: students[0]});
+            } else {
+                res.send({info: "Login failed", status: "failed", student: {name: "", id: ""}});
+            }
+        }
+    });
     
 
 

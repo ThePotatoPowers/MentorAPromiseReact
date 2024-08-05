@@ -42,7 +42,20 @@ const Assessment = () => {
         fetch("http://localhost:9000/api/questions")
             .then((res) => res.json())
             .then((data) => {
-                setQuestions(data);
+                setQuestions(data.questions);
+                let questionList = document.querySelector(".questions")
+                data.questions.forEach((question, index) => {
+                    let questionDiv = document.createElement("div");
+                    questionDiv.className = "questionDiv";
+                    questionDiv.innerHTML = `<h2>${question.question}</h2>`;
+                    let answerInput = document.createElement("input");
+                    answerInput.id = `answer${index}`;
+                    answerInput.placeholder = "Enter your answer here";
+                    questionDiv.appendChild(answerInput);
+                    questionList.appendChild(questionDiv);
+
+                    //console.log(question);
+                });
                 //console.log(data);
             });
         
@@ -55,8 +68,6 @@ const Assessment = () => {
         const name = document.getElementById("nameInput").value;
         const id = document.getElementById("idInput").value;
         setUser({ name, id });
-        console.log(name, id);
-        console.log(user);
         fetch("http://localhost:9000/api/user"
             , {
                 method: 'POST',
@@ -67,7 +78,13 @@ const Assessment = () => {
     })
             .then((res) => res.json())
             .then((data) => {
-                alert(data.info);
+                if (data.status === "failed") {
+                    alert("Student not found");
+                    return;
+                }
+                document.getElementById("nameTitle").innerText = `Welcome ${data.student.name}`;
+                document.querySelector(".questions").style.display = "block";
+                document.getElementById("submitQuestions").style.display = "block";
             });
 
 
@@ -78,9 +95,10 @@ const Assessment = () => {
 
     function submitQuestions() {
         const answers = [];
-        for (let i = 0; i < 3; i++) {
-            answers.push(document.getElementById(`answer${i}`).value);
-        }
+        questions.forEach((question, index) => {
+            const answer = document.getElementById(`answer${index}`).value;
+            answers.push({ question: question.question, answer });
+        });
         fetch("http://localhost:9000/api/answers"
             , {
                 method: 'POST',
@@ -118,22 +136,23 @@ const Assessment = () => {
 
             </div>
 
+            <h2 id="nameTitle"></h2>
 
             <div className="questions">
-                <h2>Question</h2>
+                
+                <h2>Questions: </h2>
                 {/* display the first question and answer*/}
-                <h3>{questions.length > 0 ? questions[0].question : "Loading..."}</h3>
-                <input type="text" id="answer0" placeholder="Answer" />
-                <h3>{questions.length > 0 ? questions[1].question : "Loading..."}</h3>
-                <input type="text" id="answer1" placeholder="Answer" />
-                <h3>{questions.length > 0 ? questions[2].question : "Loading..."}</h3>
-                <input type="text" id="answer2" placeholder="Answer" />
-                <br />
+                
 
-                <button onClick={submitQuestions}>Submit</button>
+                
+
+                
 
             </div>
-            
+            <center>
+                <button id="submitQuestions" onClick={submitQuestions}>Submit</button>
+
+            </center>
             
 
         </div>
