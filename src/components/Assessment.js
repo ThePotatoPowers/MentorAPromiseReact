@@ -65,8 +65,8 @@ const Assessment = () => {
     }, []);
 
     function sendUserInfo() {
-        const name = document.getElementById("nameInput").value;
-        const id = document.getElementById("idInput").value;
+        const name = document.getElementById("nameInput").value.trim();
+        const id = document.getElementById("idInput").value.trim();;
         setUser({ name, id });
         fetch("http://localhost:9000/api/user"
             , {
@@ -96,8 +96,8 @@ const Assessment = () => {
     function submitQuestions() {
         const answers = [];
         questions.forEach((question, index) => {
-            const answer = document.getElementById(`answer${index}`).value;
-            answers.push({ question: question.question, answer });
+            const answer = document.getElementById(`answer${index}`).value.trim();;
+            answers.push({ question: question.question, answer});
         });
         fetch("http://localhost:9000/api/answers"
             , {
@@ -105,7 +105,7 @@ const Assessment = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ answers}),
+                body: JSON.stringify({ answers, user }),
     })
             .then((res) => res.json())
             .then((data) => {

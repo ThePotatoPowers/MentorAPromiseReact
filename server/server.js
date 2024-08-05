@@ -45,7 +45,18 @@ const adminSchema = new mongoose.Schema({
     password: String,
 });
 
+
+
 const Admin = mongoose.model('Admin', adminSchema);
+
+const gradeSchema = new mongoose.Schema({
+    name: String,
+    id: Number,
+    grade: Number,
+});
+
+const Grade = mongoose.model('Grade', gradeSchema);
+
 
 app.use(cors());    
 app.use(express.static('public'));
@@ -206,10 +217,51 @@ app.post("/api/auth", (req, res) => {
 
 
 app.post("/api/answers", (req, res) => {
-    console.log(req.body);
-    res.send({info: "Answers received"});
-});
+    let answers = req.body.answers;
+    let name = req.body.user.name;
+    let studentID = req.body.user.id;
+    
+    let correctAnswers = 0;
+    let totalQuestions = answers.length;
 
+    // Create an array of promises for all the queries
+    let queryPromises = answers.map((answer) => {
+        return Question.findOne({ question: answer.question }).exec()
+            .then((question) => {
+                if (question && question.answer.toLowerCase().trim() === answer.answer.toLowerCase().trim()) {
+                    correctAnswers++;
+                }
+            })
+            .catch((err) => {
+                console.log("Error fetching question:", err);
+            });
+    });
+
+    // Wait for all queries to complete
+    Promise.all(queryPromises)
+        .then(() => {
+            res.send({ info: `You got ${correctAnswers} out of ${totalQuestions} correct`, status: "success" });
+
+            let grade = new Grade({ name, id: studentID, grade: correctAnswers / totalQuestions * 100 });
+
+            // Update or insert grade
+            Grade.findOneAndUpdate(
+                { id: studentID },
+                { name: name, id: studentID, grade: correctAnswers / totalQuestions * 100 },
+                { upsert: true, new: true, setDefaultsOnInsert: true },
+                function(err, result) {
+                    if (err) {
+                        console.log("Error saving grade:", err);
+                    } else {
+                        console.log("Grade saved:", result);
+                    }
+                }
+            );
+        })
+        .catch((err) => {
+            res.send({ info: "Error processing answers", status: "failed" });
+        });
+    });
 
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);

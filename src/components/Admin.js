@@ -9,8 +9,8 @@ const Admin = () => {
    
 
     function sendUserInfo() {
-        const username = document.getElementById("usernameInput").value;
-        const password = document.getElementById("passwordInput").value;
+        const username = document.getElementById("usernameInput").value.trim();;
+        const password = document.getElementById("passwordInput").value.trim();;
         setAdmin({ username, password });
 
         fetch("http://localhost:9000/api/auth"
@@ -54,8 +54,8 @@ const Admin = () => {
     }
 
     function sendStudentInfo() {
-        const studentName = document.getElementById("studentName").value;
-        const studentID = document.getElementById("studentID").value;
+        const studentName = document.getElementById("studentName").value.trim();;
+        const studentID = document.getElementById("studentID").value.trim();;
         fetch("http://localhost:9000/api/addStudent"
             , {
                 method: 'POST',
@@ -76,8 +76,8 @@ const Admin = () => {
     }
 
     function sendAdminInfo() {
-        const adminName = document.getElementById("adminName").value;
-        const adminPassword = document.getElementById("adminPassword").value;
+        const adminName = document.getElementById("adminName").value.trim();;
+        const adminPassword = document.getElementById("adminPassword").value.trim();;
         alert(adminName + " " + adminPassword);
         fetch("http://localhost:9000/api/addAdmin"
             , {
@@ -99,8 +99,8 @@ const Admin = () => {
     }
     
     function sendQuestionInfo() {
-        const question = document.getElementById("question").value;
-        const answer = document.getElementById("answer").value;
+        const question = document.getElementById("question").value.trim();;
+        const answer = document.getElementById("answer").value.trim();;
         alert(question + " " + answer);
         fetch("http://localhost:9000/api/addQuestion"
             , {
