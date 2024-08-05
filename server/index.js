@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
-const dbURI = process.env.DB_URI;
+const dbURI = process.env.MONGODB_URI;
 
 
 const app = express();
