@@ -75,7 +75,7 @@ const Admin = () => {
     })
             .then((res) => res.json())
             .then((data) => {
-                alert(data.info);
+                console.log(data.info);
             });
 
             document.getElementById("studentName").value = "";
@@ -87,7 +87,7 @@ const Admin = () => {
     function sendAdminInfo() {
         const adminName = document.getElementById("adminName").value.trim();;
         const adminPassword = document.getElementById("adminPassword").value.trim();;
-        alert(adminName + " " + adminPassword);
+        console.log(adminName + " " + adminPassword);
         fetch("https://mentor-a-promise-server.vercel.app/api/addAdmin"
             , {
                 method: 'POST',
@@ -98,7 +98,7 @@ const Admin = () => {
     })
             .then((res) => res.json())
             .then((data) => {
-                alert(data.info);
+                console.log(data.info);
             });
 
             document.getElementById("adminName").value = "";
@@ -110,7 +110,7 @@ const Admin = () => {
     function sendQuestionInfo() {
         const question = document.getElementById("question").value.trim();;
         const answer = document.getElementById("answer").value.trim();;
-        alert(question + " " + answer);
+        console.log(question + " " + answer);
         fetch("https://mentor-a-promise-server.vercel.app/api/addQuestion"
             , {
                 method: 'POST',
@@ -121,7 +121,7 @@ const Admin = () => {
     })
             .then((res) => res.json())
             .then((data) => {
-                alert(data.info);
+                console.log(data.info);
             });
 
             document.getElementById("question").value = "";
