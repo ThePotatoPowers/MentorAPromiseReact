@@ -1,15 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-body {
-    font-family: "Montserrat", sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-
-
-}
-
 .ducks {
     display: flex;
     flex-wrap: wrap;
@@ -50,4 +40,27 @@ body {
 #pondTargetText h3, #nestTargetText h3 {
     font-family: "Montserrat", sans-serif;
 
+}
+
+
+.duck {
+    margin: 5px;
+    width: 50px;
+    height: 50px;
+    /*background-color: #fd766d; */
+    font-weight: 500;
+    text-align: center;
+    line-height: 25px;
+    cursor: pointer;
+}
+
+
+
+.pond, .nest {
+    border: 1px solid black;
+    /*background-color: #fd766d; */
+    font-weight: 500;
+    text-align: center;
+    margin: 2%;
+    display: inline-block;
 }

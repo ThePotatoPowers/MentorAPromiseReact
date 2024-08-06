@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
+
 body {
     font-family: "Montserrat", sans-serif;
     display: flex;
@@ -8,82 +9,6 @@ body {
     text-align: center;
 
 
-}
-
-.visual, .draggableBody {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 5%;
-
-    animation: fadeIn 5s;
-  -webkit-animation: fadeIn 5s;
-  -moz-animation: fadeIn 5s;
-  -o-animation: fadeIn 5s;
-  -ms-animation: fadeIn 5s;
-}
-
-
-
-
-#functionImage {
-    margin-top: 20px;
-    width: 3em;
-}
-
-#equalImage {
-    margin-top: 20px;
-    width: 2em;
-}
-
-.blockKey {
-    display: inline-block;
-    margin: 5px;
-}
-
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #333;
-    padding: 10px 20px;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1000;
-}
-
-.logo {
-    color: #fff;
-    font-size: 1em;
-    font-weight: 700;
-}
-
-.logo img {
-    width: 10%;
-    float: left;
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-}
-
-.nav-links li {
-    margin: 0 15px;
-}
-
-.nav-links a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.nav-links a:hover {
-    color: #ddd;
 }
 
 #titleHub {
@@ -103,51 +28,4 @@ body {
 @keyframes fadeIn {
   0% { opacity: 0; }
   100% { opacity: 1; }
-}
-
-.draggable {
-            width: 50px;
-            height: 50px;
-            margin: 5px;
-            background-color: lightblue;
-            text-align: center;
-            line-height: 50px;
-            cursor: pointer;
-        }
-
-.duck {
-    margin: 5px;
-    width: 50px;
-    height: 50px;
-    /*background-color: #fd766d; */
-    font-weight: 500;
-    text-align: center;
-    line-height: 25px;
-    cursor: pointer;
-}
-
-
-
-.pond, .nest {
-    border: 1px solid black;
-    /*background-color: #fd766d; */
-    font-weight: 500;
-    text-align: center;
-    margin: 2%;
-    display: inline-block;
-}
-
-
-
-#countTitle {
-    text-decoration: underline;
-    margin-top: 30%;
-}
-
-.letter {
-    border: 1px solid black;
-    border-radius: 25px;
-    display: inline-block;
-    width: 5%;
-    margin: 1%;
 }
